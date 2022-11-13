@@ -7,10 +7,13 @@ module.exports = async client => {
     // get package count
     new SlashCommandLoader(client).Load()
 
-    client.emit("updatePrecense")
+    client.emit("UpdatePresence")
+    client.emit("updateResponseMessage")
     setInterval(() => {
-      client.emit("updatePrecense");
-
+      client.emit("updateResponseMessage")
+    }, 30000);
+    setInterval(() => {
+      client.emit("UpdatePresence");
     },60000)
   } catch(err) {}
 };

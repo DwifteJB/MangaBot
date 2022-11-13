@@ -13,7 +13,7 @@ module.exports = {
     .setDescription('Display all of your settings.'),
   async execute(client, message, args) {
     const user = message.user || message.author
-    CreateDefault(user.id)
+    await CreateDefault(user.id)
     const UserSettings = await Settings.get(user.id)
     let API = UserSettings.api;
     let Embed = new EmbedBuilder()

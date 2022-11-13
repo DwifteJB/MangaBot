@@ -1,6 +1,10 @@
 const {SlashCommandBuilder,EmbedBuilder, ActionRowBuilder, SelectMenuBuilder, ComponentType} = require("discord.js");
-const Search = require("../lib/Search")
-const Manga = require("../lib/MangaDatabases/kitsu");
+const Manga = require("../lib/MangaDatabases/Helper");
+const {sqlite,CreateDefault} = require("../lib/DatabaseHelper")
+const Keyv = require('keyv');
+const Settings = new Keyv(sqlite, {
+    namespace: 'Users'
+});
 module.exports = {
   name: "search",
   description: "Search up some manga!",
@@ -15,7 +19,9 @@ module.exports = {
       .setDescription("Name of the manga you would like to lookup.")),
   async execute(client, message, args) {
     let MangaName
-    let Type 
+    let Type
+    let user = message.author || message.user
+    await CreateDefault(user.id)
     if (args && args[0]) {
       MangaName = args.join(" ")
       Type = 0 // msg
@@ -30,13 +36,19 @@ module.exports = {
     } else {
       const RemoveThis = (Type == 0) ? await message.channel.send("Waiting for response from api <a:loading:1041138672151564329>") : await message.deferReply();
       // manga lookup
-      const AnimeData = await Manga.LookupMangaByName(MangaName);
-      if (AnimeData == false) {
-          message.reply("Couldn't find the specified manga!")
-          RemoveThis.delete()
+      const UserSettings = await Settings.get(user.id)
+      const API = UserSettings.api
+      let Embeds = await Manga.GetEmbeds(API,MangaName)
+        
+      if (Embeds == false) {
+          (Type == 1) ? await message.editReply("Couldn't find any manga with that name.") : await message.reply("Couldn't find any manga with that name.")
+          (Type == 0) ? RemoveThis.delete() : null
           return;
+      } else if (Embeds == true) {
+          (Type == 0) ? RemoveThis.delete() : null
+          (Type == 1) ? await message.editReply("We couldn't find the API used in your settings: "+API+"\nIt's either down for maintenance, or no longer supported.") : await message.reply("We couldn't find the API used in your settings: "+API+"\nIt's either down for maintenance, or no longer supported.")
+          return
       }
-      let Embeds = Search.CreateEmbeds(AnimeData)
 
       const row = new ActionRowBuilder()
         .addComponents(
@@ -70,10 +82,6 @@ module.exports = {
 
 
         const msg = await message.editReply({components: [row], embeds: [Embeds[0]], fetchReply: true })
-
-        console.log(message)
-
-        console.log(msg)
         const filter = i => {
           i.deferUpdate();
 

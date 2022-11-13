@@ -1,7 +1,11 @@
-const {EmbedBuilder, ActionRowBuilder, SelectMenuBuilder, ComponentType} = require("discord.js");
-const Search = require("../lib/Search")
+const {ActionRowBuilder, SelectMenuBuilder, ComponentType} = require("discord.js");
 const {MessageHandler} = require("../lib/loader")
-const Manga = require("../lib/MangaDatabases/kitsu");
+const Manga = require("../lib/MangaDatabases/Helper")
+const {sqlite,CreateDefault} = require("../lib/DatabaseHelper")
+const Keyv = require('keyv');
+const Settings = new Keyv(sqlite, {
+    namespace: 'Users'
+});
 module.exports = async (client, message) => {
     if(message.author.bot) return;
     const Handler = new MessageHandler(client,message)
@@ -20,16 +24,24 @@ module.exports = async (client, message) => {
     } else {
         const matches = message.content.match(/\[\[([^\]\]]+)\]\]/);
         if (!matches) return;
-        console.log(matches);
+        await CreateDefault(message.author.id)
         const RemoveThis = await message.channel.send("Waiting for response from api <a:loading:1041138672151564329>")
         // manga lookup
-        const AnimeData = await Manga.LookupMangaByName(matches[1]);
-        if (AnimeData == false) {
-            message.reply("I couldn't find any manga matching those params.");
+        const UserSettings = await Settings.get(message.author.id)
+        const API = UserSettings.api
+        let Embeds = await Manga.GetEmbeds(API,matches[1])
+        
+        if (Embeds == false) {
+            await message.reply("Couldn't find any manga with that name.");
             RemoveThis.delete()
-            return;
+            return
+        } else if (Embeds == true) {
+            RemoveThis.delete()
+            await message.reply("We couldn't find the API used in your settings: "+API+"\nIt's either down for maintenance, or no longer supported.");
+            return
         }
-        let Embeds = Search.CreateEmbeds(AnimeData)
+ 
+
 
 		const row = new ActionRowBuilder()
 			.addComponents(
