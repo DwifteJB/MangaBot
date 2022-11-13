@@ -1,0 +1,29 @@
+{
+  "name": "mangabot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DwifteJB/MangaBot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DwifteJB/MangaBot/issues"
+  },
+  "homepage": "https://github.com/DwifteJB/MangaBot#readme",
+  "dependencies": {
+    "@keyv/sqlite": "^3.6.2",
+    "axios": "^1.1.3",
+    "discord-modals": "^1.3.9",
+    "discord.js": "^14.6.0",
+    "discord.js-reaction-menu": "^1.1.2",
+    "dotenv": "^16.0.3",
+    "keyv": "^4.5.2"
+  }
+}
