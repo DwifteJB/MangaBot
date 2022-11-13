@@ -33,6 +33,7 @@ module.exports = {
       const AnimeData = await Manga.LookupMangaByName(MangaName);
       if (AnimeData == false) {
           message.reply("Couldn't find the specified manga!")
+          RemoveThis.delete()
           return;
       }
       let Embeds = Search.CreateEmbeds(AnimeData)

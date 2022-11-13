@@ -26,6 +26,7 @@ module.exports = async (client, message) => {
         const AnimeData = await Manga.LookupMangaByName(matches[1]);
         if (AnimeData == false) {
             message.reply("I couldn't find any manga matching those params.");
+            RemoveThis.delete()
             return;
         }
         let Embeds = Search.CreateEmbeds(AnimeData)

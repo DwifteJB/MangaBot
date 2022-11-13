@@ -19,6 +19,11 @@ new Loader(Client)
 
 Client.on("updatePrecense", async () => {
 
+    //console.log(channel)
+    const channel = Client.channels.cache.get("1041174919490310164")
+    const msg = await channel.messages.fetch("1041176477464543303")
+    msg.edit(`\`\`\`diff\n+ Kitsu\n+ ${global.ResponseTime.Kitsu || 0}ms\`\`\``)
+    console.log(global.ResponseTime)
     let random = Math.floor(Math.random() * (2 + 2))
     switch (random) {
         case 0:
