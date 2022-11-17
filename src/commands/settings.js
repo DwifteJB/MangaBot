@@ -24,6 +24,6 @@ module.exports = {
       .setThumbnail(message.guild.iconURL());
 
 
-      await message.reply({embeds:[Embed]})
+      await message.reply({embeds:[Embed],ephemeral: true})
   }
 };
