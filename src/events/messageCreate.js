@@ -22,7 +22,7 @@ module.exports = async (client, message) => {
             message.reply('There was an error trying to execute that command!');
         }
     } else {
-        const matches = message.content.match(/\[\[([^\]\]]+)\]\]/);
+        const matches = message.content.match(/\'([^\]\]]+)\'/);
         if (!matches) return;
         await CreateDefault(message.author.id)
         const RemoveThis = await message.channel.send("Waiting for response from api <a:loading:1041138672151564329>")
