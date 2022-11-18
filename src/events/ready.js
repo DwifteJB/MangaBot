@@ -1,4 +1,4 @@
-const {SlashCommandLoader} = require("../lib/Loader")
+const {SlashCommandLoader} = require(require("path").join(global.rootFolder,"src","lib") + "/loader.js")
 module.exports = async client => {
   try {
     console.log(
