@@ -30,20 +30,25 @@ Client.on("updateResponseMessage", async () => {
 })
 
 Client.on("UpdatePresence", async () => {
-    let random = Math.floor(Math.random() * (2+2))
+    let random = Math.floor(Math.random() * (3+3))
+    let toDisplay
     switch (random) {
         case 0:
-            const PKGCount = await Manga.FetchPackages()
-            Client.user.setPresence({ activities: [{ name: `${PKGCount} mangas!`, type: Discord.ActivityType.Watching}] });
+            toDisplay = await Manga.FetchPackages()
+            Client.user.setPresence({ activities: [{ name: `${toDisplay} mangas!`, type: Discord.ActivityType.Watching}] });
             break;
         case 1:
-            let randomName = await Manga.GetRandomMangaName()
-            Client.user.setPresence({ activities: [{ name: `${randomName}`, type: Discord.ActivityType.Watching}] });
+            toDisplay = await Manga.GetRandomMangaName()
+            Client.user.setPresence({ activities: [{ name: `${toDisplay}`, type: Discord.ActivityType.Watching}] });
             break;
         case 2:
-            let randomName2 = await Manga.GetRandomMangaName()
-            Client.user.setPresence({ activities: [{ name: `with my copy of ${randomName2}`, type: Discord.ActivityType.Playing}] });
+            toDisplay = await Manga.GetRandomMangaName()
+            Client.user.setPresence({ activities: [{ name: `with my copy of ${toDisplay}`, type: Discord.ActivityType.Playing}] });
             break;  
+        case 3:
+            toDisplay = await Manga.GetRandomMangaName()
+            Client.user.setPresence({ activities: [{ name: `the adaptation of ${toDisplay}`, type: Discord.ActivityType.Watching}] });
+            break;
 
         default:
             break;

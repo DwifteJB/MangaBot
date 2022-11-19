@@ -8,7 +8,6 @@ module.exports = async client => {
     new SlashCommandLoader(client).Load()
 
     client.emit("UpdatePresence")
-    client.emit("updateResponseMessage")
     setInterval(() => {
       client.emit("updateResponseMessage")
     }, 30000);
