@@ -25,7 +25,6 @@ module.exports = async (client, message) => {
         const matches = message.content.match(/\'([^\]\]]+)\'/);
         if (!matches) return;
         await CreateDefault(message.author.id)
-        const RemoveThis = await message.channel.send("Waiting for response from api <a:loading:1041138672151564329>")
         // manga lookup
         const UserSettings = await Settings.get(message.author.id)
         const API = UserSettings.api
@@ -33,12 +32,10 @@ module.exports = async (client, message) => {
         
         if (Embeds == false) {
             await message.reply("Couldn't find any manga with that name.");
-            RemoveThis.delete()
-            return
+            return;
         } else if (Embeds == true) {
-            RemoveThis.delete()
             await message.reply("We couldn't find the API used in your settings: "+API+"\nIt's either down for maintenance, or no longer supported.");
-            return
+            return;
         }
  
 
@@ -52,7 +49,6 @@ module.exports = async (client, message) => {
         for (index in Embeds) {
             row.components[0].addOptions({label:Embeds[index].data.title || "Not Found",description:Embeds[index].data.description.substring(0,80)+"...",value:index})
         }
-        RemoveThis.delete()
 		const SentMSG = await message.reply({components: [row], embeds: [Embeds[0]] });
         const filter = i => {
             i.deferUpdate();

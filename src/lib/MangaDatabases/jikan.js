@@ -31,13 +31,13 @@ async function LookupMangaByName(Name) {
 
 const {EmbedBuilder} = require("discord.js")
 
-function CreateEmbeds(AnimeData) {
+function CreateEmbeds(mangaData) {
     let Embeds = [];
 
-    for (index in AnimeData) {
+    for (index in mangaData) {
 
 
-        let Data = AnimeData[index]
+        let Data = mangaData[index]
         let title = "I couldnt get a title!";
         if (Data.titles[0]) {
             title = Data.titles[0].title
@@ -64,7 +64,7 @@ function CreateEmbeds(AnimeData) {
             .addFields({name:"Written by",value:WrittenBy,inline:true})
             .addFields({name:"Status",value:Data.status,inline:true})
             .setFooter({text:"Using Jikan API | Bot by Dwifte <3",iconURL:"https://github.com/DwifteJB.png"})
-            .setColor(13032420)
+            .setColor(Math.floor(Math.random()*16777215).toString(16))
             .setThumbnail(Data.images?.jpg?.image_url || null);
         Embeds.push(embed)
     }

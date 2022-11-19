@@ -3,6 +3,13 @@ const requestsPerSecond = require(path.join(global.rootFolder)+"/config.json").r
 const Jikan = require("./jikan")
 const Kitsu = require("./kitsu")
 let requests = {}
+
+const {sqlite} = require("../DatabaseHelper");
+const Keyv = require('keyv');
+const ResponseTime = new Keyv(sqlite, {
+    namespace: 'ResponseTimes'
+});
+
 async function GetEmbeds(Setting,Name) {
     // rate limiter!
     if (!requests[Setting]) requests[Setting] = 0
@@ -11,14 +18,16 @@ async function GetEmbeds(Setting,Name) {
         return;
     }
     requests[Setting]+=1
+    //const TimeStart = Date.now()
     let Embeds
+
     switch (Setting) {
         case "Kitsu":
-            const AnimeData = await Kitsu.LookupMangaByName(Name);
-            if (AnimeData == false) {
+            const mangaData = await Kitsu.LookupMangaByName(Name);
+            if (mangaData == false) {
                 return false;
             }
-            Embeds = Kitsu.CreateEmbeds(AnimeData)
+            Embeds = Kitsu.CreateEmbeds(mangaData)
             break;
         case "Jikan":
             const AData = await Jikan.LookupMangaByName(Name);
@@ -30,6 +39,7 @@ async function GetEmbeds(Setting,Name) {
         default:
             return true
     }
+    //await ResponseTime.set(Setting,Date.now() - TimeStart)
     requests[Setting]-=1
     return Embeds;
 }

@@ -38,10 +38,10 @@ async function GetRandomMangaName() {
             const Anime = await axios.get("https://kitsu.io/api/edge/anime?page[limit]=1&page[offset]="+r)
             await ResponseTime.set("Kitsu",Date.now() - TimeStart)
             if (Anime.data) {
-                const AnimeData = Anime.data.data[0]
-                const keys = Object.keys(AnimeData.attributes.titles)
+                const mangaData = Anime.data.data[0]
+                const keys = Object.keys(mangaData.attributes.titles)
                 const title = keys[Math.floor(keys.length*Math.random())]
-                return AnimeData.attributes.titles[title]
+                return mangaData.attributes.titles[title]
             } else {
                 return "JoJo"
             }
@@ -107,7 +107,7 @@ function CreateEmbeds(MangaData) {
             .addFields({name:"Age Rating",value:Data.attributes.ageRating || "?",inline:true})
             .addFields({name:"Status",value:Data.attributes.status,inline:true})
             .setFooter({text:"Using Kitsu API | Bot by Dwifte <3",iconURL:"https://github.com/DwifteJB.png"})
-            .setColor(13032420)
+            .setColor(Math.floor(Math.random()*16777215).toString(16))
             .setThumbnail(Data.attributes.posterImage.original || null);
         Embeds.push(embed)
     }
