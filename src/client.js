@@ -30,7 +30,7 @@ Client.on("updateResponseMessage", async () => {
 })
 
 Client.on("UpdatePresence", async () => {
-    let random = Math.floor(Math.random() * (3+3))
+    let random = Math.floor(Math.random() * 3)
     let toDisplay
     switch (random) {
         case 0:
