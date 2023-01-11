@@ -47,7 +47,13 @@ module.exports = async (client, message) => {
 					.setPlaceholder(Embeds[0].data.title)
 			);
         for (index in Embeds) {
-            row.components[0].addOptions({label:Embeds[index].data.title.substring(0,80)+"..." || "Not Found",description:Embeds[index].data.description.substring(0,80)+"...",value:index})
+		var title
+		if (Embeds[index].data.title) {
+			title = Embeds[index].data.title.substring(0,80)+"..."
+		} else {
+			title = "Not Found"	
+		}
+            row.components[0].addOptions({label:title ,description:Embeds[index].data.description.substring(0,80)+"...",value:index})
         }
 		const SentMSG = await message.reply({components: [row], embeds: [Embeds[0]] });
         const filter = i => {
