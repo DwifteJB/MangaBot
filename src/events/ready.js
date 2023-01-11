@@ -9,9 +9,6 @@ module.exports = async client => {
 
     client.emit("UpdatePresence")
     setInterval(() => {
-      client.emit("updateResponseMessage")
-    }, 30000);
-    setInterval(() => {
       client.emit("UpdatePresence");
     },60000)
   } catch(err) {}
